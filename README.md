@@ -1,0 +1,1 @@
+The central "Source of Truth" for my journey through the ChaiCode Web Development Cohort, 2026.
