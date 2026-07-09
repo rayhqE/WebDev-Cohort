@@ -6,6 +6,7 @@ function sub(a, b) {
   return a - b;
 }
 function multiply(a, b) {
+  if (a < 0 || b < 0) throw new Error("No negatives allowed");
   return a * b;
 }
 
