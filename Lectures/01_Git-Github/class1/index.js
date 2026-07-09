@@ -5,11 +5,19 @@ function sub(a, b) {
   if (!(a > b)) throw new Error("num a must be greater than b ");
   return a - b;
 }
+function multiply(a, b) {
+  if (a < 0 || b < 0) throw new Error("No negatives allowed");
+  return a * b;
+}
 
 add(3, 4);
 add(3, 4);
 
 sub(10, 3);
+multiply(4, 5);
+multiply(45, 56);
+multiply(5, 6);
+multiply(55, 63);
 
 //always leave a single line at last before commit
 //always write commit message in the present tense
