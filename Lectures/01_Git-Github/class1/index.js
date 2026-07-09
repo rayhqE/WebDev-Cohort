@@ -13,7 +13,7 @@ add(3, 4);
 add(3, 4);
 
 sub(10, 3);
-
+multiply(4, 5);
 //always leave a single line at last before commit
 //always write commit message in the present tense
 //git log --oneline
