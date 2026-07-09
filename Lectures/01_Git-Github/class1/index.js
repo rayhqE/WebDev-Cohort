@@ -5,6 +5,9 @@ function sub(a, b) {
   if (!(a > b)) throw new Error("num a must be greater than b ");
   return a - b;
 }
+function multiply(a, b) {
+  return a * b;
+}
 
 add(3, 4);
 add(3, 4);
