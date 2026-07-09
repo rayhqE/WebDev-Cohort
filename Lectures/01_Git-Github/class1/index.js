@@ -18,7 +18,13 @@ sub(10, 3);
 //git status
 //git add .
 //git commit -m "msg"
+// git push origin main
 //git remote set-url origin <url>
+//git branch
+//git reset --hard <hash>
+//git merge feat/a ❌       git merge --squash feat/a ✅
+//git checkout -b "feat/a"
+// git checkout "main"
 
 //<<Fork a repo then make some changes in it then open a pull request to the base repo ...either will be merged  or closed >> open source contribution 101 XD
 //
