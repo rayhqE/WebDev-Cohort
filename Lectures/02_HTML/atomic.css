@@ -1,0 +1,23 @@
+.color-red {
+  color: red;
+}
+.color-blue {
+  color: blue;
+}
+.bg-green {
+  background-color: green;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.p-1 {
+  padding: 10px;
+}
+.p-2 {
+  padding: 20px;
+}
+.p-3 {
+  padding: 30px;
+}

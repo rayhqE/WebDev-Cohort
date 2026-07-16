@@ -1,0 +1,32 @@
+button {
+  background-color: blue;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 10px;
+  border-radius: 10px;
+  /* border: 2px dashed pink; */
+}
+body {
+  background-color: black;
+  color: wheat;
+}
+
+h1,
+button {
+  border: 2px dashed pink;
+}
+
+.loving-button {
+  background-color: crimson;
+}
+.loving-button:hover {
+  scale: 1.2;
+}
+
+.my-pookie-batch {
+  color: crimson;
+}
+#penguin {
+  color: black;
+}
