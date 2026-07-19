@@ -1,0 +1,17 @@
+#parent {
+  border: 2px solid red;
+  width: 90vw;
+  height: 700px;
+}
+
+.child {
+  border: 2px solid green;
+  height: 40px;
+  width: 40px;
+}
+
+#parent {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
