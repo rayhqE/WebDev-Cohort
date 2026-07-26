@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Grid Template</title>
+    <style>
+      body {
+        background-color: #121212;
+        color: #fff;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      #parent {
+        display: grid;
+        gap: 10px;
+        grid-template-areas:
+          "header header header"
+          "side main main "
+          "footer footer footer";
+      }
+      div {
+        border: 1px solid red;
+      }
+      .nav {
+        grid-area: header;
+      }
+      .blog {
+        grid-area: main;
+      }
+      .ads {
+        grid-area: side;
+      }
+      .footer {
+        grid-area: footer;
+      }
+    </style>
+  </head>
+  <body id="parent">
+    <div class="nav">Navbar</div>
+    <div class="blog">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto amet
+      excepturi quisquam est provident tempore cum, doloremque quibusdam! Ex
+      sint doloremque similique, eaque dolorem itaque ab id recusandae maiores
+      enim? Quam eum, numquam porro sunt quos eos illo hic illum ex, tenetur
+      ratione quod culpa consequuntur itaque aspernatur recusandae repellat
+      asperiores dolor! Amet officia, odit sit numquam consectetur sunt under.
+    </div>
+    <div class="ads">This is for ADS</div>
+    <div class="footer">COPYRIGHT 2026</div>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+body {
+  background-color: #121212;
+  color: #fff;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+#parent {
+  border: 0.5px solid red;
+  display: grid;
+  grid-template-columns: repeat(4, 100px);
+  grid-template-rows: repeat(4, 100px);
+  /* gap: 1px; */
+}
+.child {
+  border: 1px solid rgb(250, 144, 162);
+  background-color: pink;
+  color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+/* .child-7 {
+  grid-column-start: 2;
+  grid-column-end: -2;
+} */
+
+.child-6 {
+  /* grid-row: -2/-1; 
+  grid-column: 3/4; */
+  grid-area: 3 / 2 / span 1 / span 3;
+}
