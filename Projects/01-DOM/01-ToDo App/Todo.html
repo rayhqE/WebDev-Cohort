@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>To-Do App</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #333;
+      }
+
+      .container {
+        width: min(90%, 500px);
+        padding: 30px;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      }
+
+      h1 {
+        margin-top: 0;
+        text-align: center;
+      }
+
+      .input-area {
+        display: flex;
+        gap: 10px;
+      }
+
+      input {
+        flex: 1;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+      }
+
+      button {
+        padding: 12px 18px;
+        border: none;
+        border-radius: 8px;
+        background: #667eea;
+        color: white;
+        font-size: 16px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #5369d6;
+      }
+
+      ul {
+        padding: 0;
+        margin-top: 25px;
+        list-style: none;
+      }
+
+      li {
+        margin-bottom: 10px;
+        padding: 12px 15px;
+        background: #f1f3f5;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      li:hover {
+        background: #ffe0e0;
+        text-decoration: line-through;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="container">
+      <h1>My To-Do List</h1>
+
+      <div class="input-area">
+        <input type="text" placeholder="Enter your task here!" id="input" />
+        <button id="btn">Create</button>
+      </div>
+
+      <ul id="listHolder"></ul>
+    </main>
+
+    <script>
+      const buttonRef = document.getElementById("btn");
+      buttonRef.addEventListener("click", () => {
+        let inputRef = document.getElementById("input");
+        let taskValue = inputRef.value;
+        if (taskValue === "") {
+          return alert("Input field can't be empty!");
+        }
+        const listHolder = document.getElementById("listHolder");
+        let newLi = document.createElement("li");
+        newLi.textContent = taskValue;
+        newLi.addEventListener("click", () => {
+          newLi.remove();
+          newLi = null;
+        });
+        listHolder.appendChild(newLi);
+        inputRef.value = "";
+      });
+    </script>
+  </body>
+</html>
