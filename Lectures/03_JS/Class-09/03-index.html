@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        background-color: black;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <button id="clickbtn">Click Me!</button>
+  </body>
+  <script>
+    // console.log(window.alert("this is an alert"));
+    // console.log(window.document.getElementById("clickbtn"));
+    const buttonRef = window.document.getElementById("clickbtn");
+    // buttonRef.remove();
+    // buttonRef = null;garbage cleaning
+    buttonRef.style.backgroundColor = "pink";
+
+    // buttonRef.onclick = function () {
+    //   console.log("kuch to krrna hai");
+    // };
+    // buttonRef.onclick = function () {
+    //   console.log("Jump to DB");
+    // };
+    function clickBtnhandler() {
+      // saveDataToDb();
+      // changeBgColor();
+      buttonRef.remove();
+      buttonRef = null;
+    }
+    function saveDataToDb() {
+      console.log("we are now saving data to db");
+    }
+    function changeBgColor() {
+      document.body.style.backgroundColor = "red";
+    }
+    buttonRef.addEventListener("click", clickBtnhandler);
+    // buttonRef.addEventListener("click", wentToDb);
+    function wentToDb() {
+      console.log("went to db");
+      buttonRef.removeEventListener("click", wentToDb);
+    }
+  </script>
+</html>
