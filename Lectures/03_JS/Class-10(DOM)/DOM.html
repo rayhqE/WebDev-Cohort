@@ -1,0 +1,309 @@
+<h1>DOM — Document Object Model</h1>
+
+<h2>1. What is DOM?</h2>
+
+<ul>
+  <li>DOM = Document Object Model.</li>
+  <li>It represents an HTML document as a tree of objects/nodes.</li>
+  <li>JavaScript uses the DOM to access and manipulate HTML elements.</li>
+</ul>
+
+<pre>
+window
+  ↓
+document
+  ↓
+HTML
+ ├── head
+ │    └── title
+ └── body
+      ├── h1
+      ├── p
+      └── ul
+           ├── li
+           ├── li
+           └── li
+</pre>
+
+<h2>2. window & document</h2>
+
+<ul>
+  <li><b>window</b> = global object provided by the browser.</li>
+  <li><b>document</b> = represents the current HTML page.</li>
+</ul>
+
+<pre>
+window
+  ↓
+document
+  ↓
+HTML DOM tree
+</pre>
+
+<p>Usually we directly use <code>document</code> to manipulate the webpage.</p>
+
+<h2>3. Types of DOM Nodes</h2>
+
+<ul>
+  <li>
+    <b>Element Node</b> → HTML elements like &lt;div&gt;, &lt;p&gt;, &lt;h1&gt;
+  </li>
+  <li><b>Text Node</b> → Text inside an element</li>
+  <li><b>Comment Node</b> → HTML comments</li>
+  <li><b>Attribute Node</b> → Attributes like id, class, src, href</li>
+  <li><b>Document Node</b> → The document itself</li>
+</ul>
+
+<pre>
+&lt;p class="para"&gt;Hello&lt;/p&gt;
+
+Element → p
+Attribute → class="para"
+Text → "Hello"
+</pre>
+
+<h2>4. Selecting Elements</h2>
+
+<h3>getElementById()</h3>
+
+<pre>
+const heading = document.getElementById("heading1");
+</pre>
+
+<p>Selects one element using its ID.</p>
+
+<h3>querySelector()</h3>
+
+<pre>
+const heading = document.querySelector("#heading1");
+
+const para = document.querySelector(".para");
+
+const firstLi = document.querySelector("#list-container li");
+</pre>
+
+<p>Returns the first matching element.</p>
+
+<h3>querySelectorAll()</h3>
+
+<pre>
+const listItems = document.querySelectorAll("#list-container li");
+</pre>
+
+<p>Returns all matching elements.</p>
+
+<h2>5. Creating Elements</h2>
+
+<pre>
+const button = document.createElement("button");
+</pre>
+
+<p>Creates a new HTML element, but it is not visible until added to the DOM.</p>
+
+<h2>6. Adding Elements</h2>
+
+<pre>
+document.body.appendChild(button);
+</pre>
+
+<p>Adds the newly created element to the page.</p>
+
+<pre>
+button.innerText = "Press";
+</pre>
+
+<p>Sets the text inside the button.</p>
+
+<h2>7. innerHTML</h2>
+
+<pre>
+ul.innerHTML += "&lt;li&gt;item 4&lt;/li&gt;";
+</pre>
+
+<p>Adds HTML content inside the element.</p>
+
+<p>
+  <b>Note:</b> innerHTML works with HTML strings, while textContent/innerText
+  deals with text.
+</p>
+
+<h2>8. Style Manipulation</h2>
+
+<pre>
+element.style.backgroundColor = "red";
+</pre>
+
+<p>Directly changes an element's inline CSS.</p>
+
+<pre>
+document.body.style.backgroundColor = "red";
+</pre>
+
+<h2>9. classList</h2>
+
+<p>Used to manipulate CSS classes using JavaScript.</p>
+
+<h3>add()</h3>
+
+<pre>
+button.classList.add("button");
+</pre>
+
+<p>Adds a class.</p>
+
+<h3>remove()</h3>
+
+<pre>
+button.classList.remove("button");
+</pre>
+
+<p>Removes a class.</p>
+
+<h3>toggle()</h3>
+
+<pre>
+document.body.classList.toggle("dark");
+</pre>
+
+<p>
+  If the class exists → removes it.<br />
+  If the class doesn't exist → adds it.
+</p>
+
+<pre>
+document.body.classList.toggle("dark");
+// true → class added
+// false → class removed
+</pre>
+
+<h2>10. Event Listeners</h2>
+
+<pre>
+button.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+});
+</pre>
+
+<p>This runs the function whenever the button is clicked.</p>
+
+<p>Common events:</p>
+
+<ul>
+  <li>click</li>
+  <li>input</li>
+  <li>change</li>
+  <li>submit</li>
+  <li>mouseover</li>
+  <li>keydown</li>
+</ul>
+
+<h2>11. Example: Create Button Dynamically</h2>
+
+<pre>
+const button = document.createElement("button");
+
+document.body.appendChild(button);
+
+button.innerText = "Press";
+
+button.classList.add("button");
+
+button.addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+});
+</pre>
+
+<h2>12. Complete DOM Flow</h2>
+
+<pre>
+Select
+  ↓
+Create / Modify
+  ↓
+Add to DOM
+  ↓
+Style / Class
+  ↓
+Add Event
+</pre>
+
+<pre>
+document
+  ↓
+querySelector()
+  ↓
+element
+  ↓
+classList / style / innerText
+  ↓
+addEventListener()
+</pre>
+
+<h2>13. Important Methods — Quick Revision</h2>
+
+<table border="1" cellpadding="8">
+  <tr>
+    <th>Method</th>
+    <th>Purpose</th>
+  </tr>
+
+  <tr>
+    <td>getElementById()</td>
+    <td>Select element by ID</td>
+  </tr>
+
+  <tr>
+    <td>querySelector()</td>
+    <td>Select first matching element</td>
+  </tr>
+
+  <tr>
+    <td>querySelectorAll()</td>
+    <td>Select all matching elements</td>
+  </tr>
+
+  <tr>
+    <td>createElement()</td>
+    <td>Create new element</td>
+  </tr>
+
+  <tr>
+    <td>appendChild()</td>
+    <td>Add element to DOM</td>
+  </tr>
+
+  <tr>
+    <td>classList.add()</td>
+    <td>Add CSS class</td>
+  </tr>
+
+  <tr>
+    <td>classList.remove()</td>
+    <td>Remove CSS class</td>
+  </tr>
+
+  <tr>
+    <td>classList.toggle()</td>
+    <td>Add/remove class automatically</td>
+  </tr>
+
+  <tr>
+    <td>element.style</td>
+    <td>Change inline CSS</td>
+  </tr>
+
+  <tr>
+    <td>innerText</td>
+    <td>Read/set visible text</td>
+  </tr>
+
+  <tr>
+    <td>innerHTML</td>
+    <td>Read/set HTML content</td>
+  </tr>
+
+  <tr>
+    <td>addEventListener()</td>
+    <td>Listen for events</td>
+  </tr>
+</table>

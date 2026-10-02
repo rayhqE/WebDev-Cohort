@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <h1 id="heading1">
+      Hello World <span style="display: none">I love Coding</span>
+    </h1>
+    <p class="para">
+      Para-1, ipsum dolor sit amet consectetur adipisicing elit. Quod, corrupti!
+    </p>
+    <p class="para">
+      Para-2, ipsum dolor sit amet consectetur adipisicing elit. Quod, corrupti!
+    </p>
+    <p class="para">
+      Para-3, ipsum dolor sit amet consectetur adipisicing elit. Quod, corrupti!
+    </p>
+    <p class="para">
+      Para-4, ipsum dolor sit amet consectetur adipisicing elit. Quod, corrupti!
+    </p>
+    <ul id="list-container" class="list">
+      <li>item 1</li>
+      <li>item 2</li>
+      <li>item 3</li>
+    </ul>
+    <!-- <img id="image" src="cat.png" alt="img" class="image-png" /> -->
+  </body>
+  <script>
+    const listItems = document.querySelectorAll("#list-container li");
+    const ul = document.getElementById("list-container");
+    ul.innerHTML += "<li>item 4</li>";
+    // console.log(listItems);
+  </script>
+</html>
