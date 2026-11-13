@@ -5,6 +5,7 @@ import { db } from "../../db/index.js";
 import { usersTable } from "../../db/schema.js";
 import { eq } from "drizzle-orm";
 import { createUserToken } from "./utils/token.js";
+import type { UserTokenPayload } from "./utils/token.js";
 
 class AuthController {
   public async handleSignup(req: Request, res: Response) {
@@ -77,6 +78,21 @@ class AuthController {
     //TODO: token banao
     const token = createUserToken({ id: userSelect.id });
     return res.json({ message: "Signin Success", data: { token } });
+  }
+  public async handleMe(req: Request, res: Response) {
+    //@ts-ignore
+    const { id } = req.user! as UserTokenPayload;
+
+    const [userResult] = await db
+      .select()
+      .from(usersTable)
+      .where(eq(usersTable.id, id));
+
+    return res.json({
+      firstName: userResult?.firstName,
+      lastName: userResult?.lastName,
+      email: userResult?.email,
+    });
   }
 }
 
