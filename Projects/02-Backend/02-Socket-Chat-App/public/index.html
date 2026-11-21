@@ -1,0 +1,313 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WebSocket Chat</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family:
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        background:
+          radial-gradient(
+            circle at top left,
+            rgba(99, 102, 241, 0.16),
+            transparent 32rem
+          ),
+          #09090b;
+        color: #fafafa;
+      }
+
+      .chat {
+        width: min(92vw, 760px);
+        height: min(88vh, 680px);
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        overflow: hidden;
+        border: 1px solid #27272a;
+        border-radius: 18px;
+        background: #18181b;
+        box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+      }
+
+      .chat-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 20px;
+        border-bottom: 1px solid #27272a;
+      }
+
+      .status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #22c55e;
+        box-shadow: 0 0 12px rgba(34, 197, 94, 0.7);
+      }
+
+      .chat-header h1 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 650;
+      }
+
+      .chat-header p {
+        margin: 2px 0 0;
+        color: #a1a1aa;
+        font-size: 12px;
+      }
+
+      #typing-indicator {
+        margin: 2px 0 0;
+        color: #a1a1aa;
+        font-size: 12px;
+        opacity: 0;
+        transition: opacity 150ms;
+      }
+
+      #typing-indicator.visible {
+        opacity: 1;
+      }
+
+      .messages {
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 20px;
+        scrollbar-width: thin;
+        scrollbar-color: #3f3f46 transparent;
+      }
+
+      .message {
+        max-width: 72%;
+        align-self: flex-start;
+        padding: 10px 13px;
+        border-radius: 4px 14px 14px 14px;
+        background: #27272a;
+        line-height: 1.45;
+        overflow-wrap: anywhere;
+      }
+
+      .message.own {
+        align-self: flex-end;
+        border-radius: 14px 4px 14px 14px;
+        background: #4f46e5;
+      }
+
+      .message-meta {
+        display: block;
+        margin-bottom: 3px;
+        color: #a1a1aa;
+        font-size: 11px;
+      }
+
+      .message.own .message-meta {
+        color: #c7d2fe;
+        text-align: right;
+      }
+
+      .composer {
+        display: flex;
+        gap: 10px;
+        padding: 16px 20px;
+        border-top: 1px solid #27272a;
+        background: #18181b;
+      }
+
+      .composer input {
+        min-width: 0;
+        flex: 1;
+        height: 44px;
+        border: 1px solid #3f3f46;
+        border-radius: 10px;
+        outline: none;
+        background: #27272a;
+        color: #fafafa;
+        padding: 0 14px;
+        transition:
+          border-color 150ms,
+          box-shadow 150ms;
+      }
+
+      .composer input:focus {
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.16);
+      }
+
+      .composer input::placeholder {
+        color: #71717a;
+      }
+
+      .composer button {
+        height: 44px;
+        border: 0;
+        border-radius: 10px;
+        padding: 0 18px;
+        background: #6366f1;
+        color: white;
+        font-weight: 700;
+        cursor: pointer;
+        transition:
+          background 150ms,
+          transform 150ms;
+      }
+
+      .composer button:hover {
+        background: #5558df;
+      }
+
+      .composer button:active {
+        transform: scale(0.97);
+      }
+
+      @media (max-width: 600px) {
+        .chat {
+          width: 100vw;
+          height: 100dvh;
+          border: 0;
+          border-radius: 0;
+        }
+
+        .message {
+          max-width: 84%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="chat" aria-label="Chat room">
+      <header class="chat-header">
+        <span class="status-dot" aria-hidden="true"></span>
+        <div>
+          <h1>General</h1>
+          <p id="connection-status">Connecting...</p>
+          <p id="typing-indicator" aria-live="polite">Someone is typing...</p>
+        </div>
+      </header>
+
+      <section id="messages" class="messages" aria-live="polite"></section>
+
+      <form id="composer" class="composer">
+        <input
+          id="message-input"
+          type="text"
+          placeholder="Type a message..."
+          autocomplete="off"
+          aria-label="Message"
+        />
+        <button type="submit">Send</button>
+      </form>
+    </main>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io();
+
+      socket.on("server:message", (data) => {
+        console.log("Message from server", data);
+        typingIndicator.classList.remove("visible");
+        if (data.text) {
+          addMessage(data.text);
+        }
+      });
+      const form = document.querySelector("#composer");
+      const input = document.querySelector("#message-input");
+      const messages = document.querySelector("#messages");
+      const connectionStatus = document.querySelector("#connection-status");
+      const typingIndicator = document.querySelector("#typing-indicator");
+      let messageInputHandler = null;
+      let lastTypingEmit = 0;
+      const TYPING_THROTTLE = 800;
+      let typingIndicatorTimeout;
+
+      function onMessageInput(text) {
+        console.log({ message: text });
+        socket.emit("user:message", { text });
+        addMessage(text, true);
+      }
+
+      window.onMessageInput = onMessageInput;
+
+      // onMessageInput((message) => {
+      //   socket.emit("chat:message", message);
+      //   addMessage(message, true);
+      // });
+
+      function addMessage(text, own = false) {
+        const message = document.createElement("div");
+        message.className = `message${own ? " own" : ""}`;
+
+        const meta = document.createElement("span");
+        meta.className = "message-meta";
+        meta.textContent = own ? "You" : "Someone";
+
+        const body = document.createElement("span");
+        body.textContent = text;
+
+        message.append(meta, body);
+        messages.append(message);
+        messages.scrollTop = messages.scrollHeight;
+      }
+
+      socket.on("connect", () => {
+        connectionStatus.textContent = "Connected";
+      });
+
+      socket.on("disconnect", () => {
+        connectionStatus.textContent = "Disconnected";
+      });
+
+      socket.on("server:user:typing", () => {
+        clearTimeout(typingIndicatorTimeout);
+        typingIndicator.classList.add("visible");
+
+        typingIndicatorTimeout = setTimeout(() => {
+          typingIndicator.classList.remove("visible");
+        }, 1500);
+      });
+
+      form.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const text = input.value.trim();
+
+        if (!text) return;
+
+        onMessageInput(text);
+
+        input.value = "";
+        input.focus();
+      });
+
+      input.addEventListener("input", () => {
+        if (!input.value.trim()) return;
+        const now = Date.now();
+        if (now - lastTypingEmit >= TYPING_THROTTLE) {
+          socket.emit("user:typing");
+          lastTypingEmit = now;
+        }
+      });
+
+      input.focus();
+    </script>
+  </body>
+</html>
