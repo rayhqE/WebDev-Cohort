@@ -32,12 +32,13 @@ async function main() {
 
   //Socket IO Handlers
   io.on("connection", (socket) => {
+    //OIDC Authentication //user.sub?
     console.log(`Socket Connected`, { id: socket.id });
 
     socket.on("client:checkbox:change", async (data) => {
       console.log(`[Socket:${socket.id}]:client:checkbox:change`, data);
 
-      const lastOperationTime = rateLimitingHashMap.get(socket.id);
+      const lastOperationTime = await redis.get(`rate-limiting:${socket.id}`);
       if (lastOperationTime) {
         const timeElapsed = Date.now() - lastOperationTime;
         if (timeElapsed < 5.5 * 1000) {
@@ -45,7 +46,7 @@ async function main() {
           return;
         }
       }
-      rateLimitingHashMap.set(socket.id, Date.now());
+      await redis.set(`rate-limiting:${socket.id}`, Date.now());
 
       const existingState = await redis.get(CHECKBOX_STATE_KEY);
 
