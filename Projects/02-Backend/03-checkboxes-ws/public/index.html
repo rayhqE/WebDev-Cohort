@@ -50,6 +50,82 @@
         text-shadow: 0 4px 24px rgba(196, 181, 253, 0.25);
       }
 
+      #toast-container {
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        z-index: 10;
+        display: flex;
+        width: min(360px, calc(100vw - 32px));
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .toast {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 16px;
+        border: 1px solid rgba(254, 202, 202, 0.65);
+        border-radius: 16px;
+        background: linear-gradient(110deg, #fb7185, #ef4444);
+        color: #fff;
+        box-shadow: 0 12px 30px rgba(69, 10, 35, 0.3);
+        animation: toast-enter 180ms ease-out;
+      }
+
+      .toast-icon {
+        display: grid;
+        width: 34px;
+        height: 34px;
+        flex: 0 0 34px;
+        place-items: center;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.22);
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .toast-message {
+        flex: 1;
+        font-size: 1rem;
+        font-weight: 650;
+      }
+
+      .toast-close {
+        padding: 4px;
+        border: 0;
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+        font: inherit;
+        font-size: 1.25rem;
+        line-height: 1;
+        opacity: 0.9;
+      }
+
+      .toast-close:hover {
+        opacity: 1;
+      }
+
+      .toast-close:focus-visible {
+        outline: 2px solid #fff;
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+
+      @keyframes toast-enter {
+        from {
+          transform: translateX(16px);
+          opacity: 0;
+        }
+
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
       #container {
         width: min(100%, 980px);
         padding: 28px;
@@ -136,6 +212,11 @@
           gap: 18px;
         }
 
+        #toast-container {
+          top: 16px;
+          right: 16px;
+        }
+
         #container {
           padding: 20px;
           gap: 10px 12px;
@@ -158,12 +239,41 @@
   <body>
     <h1>CheckBoxes</h1>
     <h4>A tiny playground of clickable squares.Tick away!!</h4>
+    <div id="toast-container" aria-live="assertive" aria-atomic="false"></div>
     <div id="container"></div>
     <script src="/socket.io/socket.io.js"></script>
     <script>
       const socket = io();
       const container = document.getElementById("container");
+      const toastContainer = document.getElementById("toast-container");
       const CHECKBOX_COUNT = 100;
+
+      socket.on("server:error", (data) => {
+        const errorMessage = data.error;
+        const toast = document.createElement("div");
+        toast.className = "toast";
+        toast.setAttribute("role", "alert");
+
+        const icon = document.createElement("span");
+        icon.className = "toast-icon";
+        icon.setAttribute("aria-hidden", "true");
+        icon.textContent = "!";
+
+        const message = document.createElement("span");
+        message.className = "toast-message";
+        message.textContent = errorMessage;
+
+        const closeButton = document.createElement("button");
+        closeButton.className = "toast-close";
+        closeButton.type = "button";
+        closeButton.setAttribute("aria-label", "Dismiss error");
+        closeButton.textContent = "×";
+        closeButton.addEventListener("click", () => toast.remove());
+
+        toast.append(icon, message, closeButton);
+        toastContainer.appendChild(toast);
+        window.setTimeout(() => toast.remove(), 5000);
+      });
 
       socket.on("server:checkbox:change", (data) => {
         console.log(`Socket Server Event`, data);
@@ -175,7 +285,10 @@
         }
       });
 
-      window.addEventListener("load", async () => {
+      async function fetchStateFromServer() {
+        while (container.firstChild) {
+          container.removeChild(container.firstChild);
+        }
         const response = await fetch("/checkboxes", { method: "GET" });
         const data = await response.json();
         if (data && data.checkboxes) {
@@ -190,10 +303,15 @@
               const checked = event.target.checked;
               console.log("Checkbox Changed", { index, checked });
               socket.emit("client:checkbox:change", { index, checked });
+              fetchStateFromServer();
             });
             container.appendChild(input);
           });
         }
+      }
+
+      window.addEventListener("load", async () => {
+        fetchStateFromServer();
       });
     </script>
   </body>
