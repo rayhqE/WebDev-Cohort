@@ -7,5 +7,8 @@ function createrRedisConnection() {
   });
 }
 
+export const redis = createrRedisConnection();
+
 export const publisher = createrRedisConnection();
+
 export const subscriber = createrRedisConnection();
