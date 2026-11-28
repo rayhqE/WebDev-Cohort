@@ -1,0 +1,95 @@
+.counter-page {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+}
+
+.counter-card {
+  width: min(100%, 22rem);
+  padding: 2rem;
+  border: 1px solid #292929;
+  border-radius: 1rem;
+  background:
+    radial-gradient(circle, rgb(255 255 255 / 8%) 1px, transparent 1.5px) 0 0 / 22px
+      22px,
+    linear-gradient(145deg, #151515, #101010);
+  box-shadow: 0 1.25rem 3rem rgb(0 0 0 / 30%);
+  text-align: center;
+}
+
+.counter-eyebrow {
+  margin: 0 0 0.75rem;
+  color: #888;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+
+.counter-value {
+  display: block;
+  margin-bottom: 1.75rem;
+  color: #f2f2f2;
+  font-size: clamp(3.5rem, 18vw, 5rem);
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.counter-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.counter-button {
+  min-height: 2.75rem;
+  padding: 0.65rem 1rem;
+  border: 1px solid #3a3a3a;
+  border-radius: 0.55rem;
+  color: #eee;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    transform 150ms ease;
+}
+
+.counter-button:hover {
+  border-color: #646464;
+  transform: translateY(-1px);
+}
+
+.counter-button:active {
+  transform: translateY(0);
+}
+
+.counter-button:focus-visible {
+  outline: 2px solid #aaa;
+  outline-offset: 3px;
+}
+
+.counter-button-primary {
+  border-color: #515151;
+  background: #e7e7e7;
+  color: #171717;
+}
+
+.counter-button-primary:hover {
+  border-color: #fff;
+  background: #fff;
+}
+
+.counter-button-secondary {
+  background: #222;
+}
+
+.counter-button-secondary:hover {
+  background: #2b2b2b;
+}

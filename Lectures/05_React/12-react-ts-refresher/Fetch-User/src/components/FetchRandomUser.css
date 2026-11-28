@@ -1,0 +1,53 @@
+.fetch-user-card {
+  width: min(100% - 2rem, 26rem);
+  margin: 3rem auto;
+  padding: 1.5rem;
+  border: 1px solid #2a2a2a;
+  border-radius: 0.75rem;
+  background: #111;
+  box-shadow: 0 0.75rem 2rem rgb(0 0 0 / 20%);
+}
+
+.fetch-user-button {
+  padding: 0.65rem 1rem;
+  border: 1px solid #484848;
+  border-radius: 0.45rem;
+  background: #242424;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease;
+}
+
+.fetch-user-button:hover {
+  border-color: #707070;
+  background: #303030;
+}
+
+.fetch-user-button:focus-visible {
+  outline: 2px solid #aaa;
+  outline-offset: 3px;
+}
+
+.fetch-user-result {
+  min-height: 3rem;
+  margin-top: 1.25rem;
+}
+
+.fetch-user-name {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.fetch-user-status {
+  margin: 0;
+  color: #aaa;
+}
+
+.fetch-user-error {
+  margin: 1rem 0 0;
+  color: #fca5a5;
+}
